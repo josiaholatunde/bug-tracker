@@ -1,26 +1,16 @@
 package com.example.fundamentals.integrations;
 
-import com.example.fundamentals.controllers.ApplicationController;
 import com.example.fundamentals.dtos.ApplicationDto;
 import com.example.fundamentals.dtos.BugTrackerResponse;
+import com.example.fundamentals.models.Application;
 import com.example.fundamentals.services.ApplicationService;
+import com.example.fundamentals.utils.BaseApplicationControllerTest;
 import com.example.fundamentals.utils.Constants;
 import com.example.fundamentals.utils.ResponseUtilService;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
+
 
 import java.util.Arrays;
 
@@ -35,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 
-public class ApplicationControllerTest extends BaseIntegrationTest {
+public class ApplicationControllerTest extends BaseApplicationControllerTest {
 
     @SpyBean
     private ApplicationService applicationService;
@@ -67,6 +57,33 @@ public class ApplicationControllerTest extends BaseIntegrationTest {
 
         verify(applicationService, times(1)).retrieveApplications();
     }
+
+    @Test
+    public void testSuccessfullyGetApplicationByCode() throws Exception {
+
+        Application application = seedTestApplication();
+        ApplicationDto applicationDto = buildApplicationDtoFromApplication(application);
+
+        doReturn(BugTrackerResponse.builder()
+                .requestSuccessful(true)
+                .data(applicationDto)
+                .message(Constants.SUCCESS_RESPONSE_MESSAGE)
+                .build())
+                .when(applicationService).retrieveByCode(application.getCode());
+
+        mockMvc.perform(get(String.format("%sapplications/%s",Constants.API_VERSION_1, application.getCode()))
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$.data").exists())
+                .andExpect(jsonPath("$.requestSuccessful").value(true))
+                .andExpect(jsonPath("$.message").value(Constants.SUCCESS_RESPONSE_MESSAGE));
+
+        verify(applicationService, times(1)).retrieveByCode(application.getCode());
+    }
+
+
 
 
 }
