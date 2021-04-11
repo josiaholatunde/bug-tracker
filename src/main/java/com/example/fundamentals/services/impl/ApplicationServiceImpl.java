@@ -1,9 +1,12 @@
 package com.example.fundamentals.services.impl;
 
 import com.example.fundamentals.dtos.ApplicationDto;
+import com.example.fundamentals.dtos.BugTrackerResponse;
+import com.example.fundamentals.exceptions.ResourceNotFoundException;
 import com.example.fundamentals.models.Application;
 import com.example.fundamentals.repositories.ApplicationRepository;
 import com.example.fundamentals.services.ApplicationService;
+import com.example.fundamentals.utils.Constants;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -23,9 +26,28 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final ApplicationRepository applicationRepository;
     private static final Long MAX_GENERATION_ATTEMPTS = 99999999l;
     @Override
-    public List<ApplicationDto> retrieveApplications() {
-        return StreamSupport.stream(applicationRepository.findAll().spliterator(), false).map(this::convertEntityToData)
+    public BugTrackerResponse retrieveApplications() {
+        List<ApplicationDto> applicationDtoList = StreamSupport.stream(applicationRepository.findAll().spliterator(), false).map(this::convertEntityToData)
                 .collect(Collectors.toList());
+        return BugTrackerResponse
+                .builder()
+                .requestSuccessful(true)
+                .data(applicationDtoList)
+                .message(Constants.SUCCESS_RESPONSE_MESSAGE)
+                .build();
+    }
+
+    @Override
+    public BugTrackerResponse retrieveByCode(String code) {
+        ApplicationDto applicationDto = findByCode(code).orElseThrow(() ->
+                new ResourceNotFoundException("Application was not found. Kindly try again with a valid code"));
+
+        return BugTrackerResponse
+                .builder()
+                .requestSuccessful(true)
+                .data(applicationDto)
+                .message(Constants.SUCCESS_RESPONSE_MESSAGE)
+                .build();
     }
 
     public Optional<ApplicationDto> findByCode(String code) {

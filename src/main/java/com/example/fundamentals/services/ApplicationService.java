@@ -1,9 +1,10 @@
 package com.example.fundamentals.services;
 
-import com.example.fundamentals.dtos.ApplicationDto;
-
-import java.util.List;
+import com.example.fundamentals.dtos.BugTrackerResponse;
 
 public interface ApplicationService {
-    List<ApplicationDto> retrieveApplications();
+
+    BugTrackerResponse retrieveApplications();
+
+    BugTrackerResponse retrieveByCode(String code);
 }
