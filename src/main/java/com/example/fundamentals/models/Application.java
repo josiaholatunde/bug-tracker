@@ -22,6 +22,9 @@ public class Application {
     @Column(name = "application_id")
     private Long id;
 
+    @Column(name = "code", nullable = false)
+    private String code;
+
     @Column(name = "app_name", nullable = false)
     private String name;
 

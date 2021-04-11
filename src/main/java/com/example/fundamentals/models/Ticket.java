@@ -20,6 +20,9 @@ public class Ticket {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "code", nullable = false)
+    private String code;
+
     private String title;
 
     private String description;

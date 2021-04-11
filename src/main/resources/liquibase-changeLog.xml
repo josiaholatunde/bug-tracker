@@ -6,6 +6,9 @@
             <column name="application_id" autoIncrement="true" type="BIGINT">
                 <constraints primaryKey="true" />
             </column>
+            <column name="code"  type="varchar(200)">
+                <constraints nullable="false" />
+            </column>
             <column name="app_name"  type="varchar(200)">
                 <constraints nullable="false" />
             </column>
@@ -24,6 +27,9 @@
         <createTable tableName="tickets">
             <column name="id" autoIncrement="true" type="BIGINT">
                 <constraints primaryKey="true" />
+            </column>
+            <column name="code"  type="varchar(200)">
+                <constraints nullable="false" />
             </column>
             <column name="title"  type="varchar(200)">
                 <constraints nullable="false" />
@@ -44,6 +50,9 @@
         <createTable tableName="releases">
             <column name="id" autoIncrement="true" type="BIGINT">
                 <constraints primaryKey="true" />
+            </column>
+            <column name="code"  type="varchar(200)">
+                <constraints nullable="false" />
             </column>
             <column name="release_date"  type="datetime">
                 <constraints nullable="false" />

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -26,14 +27,17 @@ public class ApplicationSeeder implements ApplicationListener<ApplicationReadyEv
         try {
             List applicationsToBeSeeded = Arrays.asList(
                     Application.builder().name("TrackZilla").description("Application for tracking bugs")
+                            .code(UUID.randomUUID().toString())
                             .createdAt(LocalDateTime.now())
                             .updatedAt(LocalDateTime.now())
                             .build(),
                     Application.builder().name("Expenses").description("Application for tracking expenses")
+                            .code(UUID.randomUUID().toString())
                             .createdAt(LocalDateTime.now())
                             .updatedAt(LocalDateTime.now())
                             .build(),
                     Application.builder().name("Notifications").description("Application for tracking notifications sent")
+                            .code(UUID.randomUUID().toString())
                             .createdAt(LocalDateTime.now())
                             .updatedAt(LocalDateTime.now())
                             .build()
