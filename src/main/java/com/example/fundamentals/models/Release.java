@@ -20,6 +20,9 @@ public class Release {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "code", nullable = false)
+    private String code;
+
     private LocalDateTime releaseDate;
 
     private String description;
