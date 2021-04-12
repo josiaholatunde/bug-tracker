@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequiredArgsConstructor
 public class GlobalControllerAdvice {
 
-    private ResponseUtilService responseUtilService;
+    private final ResponseUtilService responseUtilService;
 
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
