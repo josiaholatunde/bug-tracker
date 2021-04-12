@@ -25,24 +25,29 @@ public class ApplicationSeeder implements ApplicationListener<ApplicationReadyEv
         log.info("Application seeder is ready to start");
 
         try {
-            List applicationsToBeSeeded = Arrays.asList(
-                    Application.builder().name("TrackZilla").description("Application for tracking bugs")
-                            .code(UUID.randomUUID().toString())
-                            .createdAt(LocalDateTime.now())
-                            .updatedAt(LocalDateTime.now())
-                            .build(),
-                    Application.builder().name("Expenses").description("Application for tracking expenses")
-                            .code(UUID.randomUUID().toString())
-                            .createdAt(LocalDateTime.now())
-                            .updatedAt(LocalDateTime.now())
-                            .build(),
-                    Application.builder().name("Notifications").description("Application for tracking notifications sent")
-                            .code(UUID.randomUUID().toString())
-                            .createdAt(LocalDateTime.now())
-                            .updatedAt(LocalDateTime.now())
-                            .build()
-            );
-            applicationRepository.saveAll(applicationsToBeSeeded);
+            if (applicationRepository.count() == 0) {
+                List applicationsToBeSeeded = Arrays.asList(
+                        Application.builder().name("TrackZilla").description("Application for tracking bugs")
+                                .code(UUID.randomUUID().toString())
+                                .createdAt(LocalDateTime.now())
+                                .updatedAt(LocalDateTime.now())
+                                .build(),
+                        Application.builder().name("Expenses").description("Application for tracking expenses")
+                                .code(UUID.randomUUID().toString())
+                                .createdAt(LocalDateTime.now())
+                                .updatedAt(LocalDateTime.now())
+                                .build(),
+                        Application.builder().name("Notifications").description("Application for tracking notifications sent")
+                                .code(UUID.randomUUID().toString())
+                                .createdAt(LocalDateTime.now())
+                                .updatedAt(LocalDateTime.now())
+                                .build()
+                );
+                applicationRepository.saveAll(applicationsToBeSeeded);
+            } else {
+                log.info("The applications database already has sample data");
+            }
+
 
             log.info("Application seeder has finished executing");
         } catch (Exception ex) {
